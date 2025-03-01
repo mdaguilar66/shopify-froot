@@ -1,0 +1,12 @@
+# Ignore Node.js dependencies
+node_modules/
+package-lock.json
+
+# Ignore Webpack output (if using a dist folder)
+dist/
+
+# Ignore Shopify CLI cache
+.shopify-cli/
+
+# Ignore config files that might contain store-specific settings
+config/settings_data.json
