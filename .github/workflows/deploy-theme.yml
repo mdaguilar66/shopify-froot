@@ -1,0 +1,22 @@
+name: Deploy Shopify Theme
+
+on:
+  push:
+    branches:
+      - main # Runs deployment when changes are pushed to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli
+
+      - name: Authenticate Shopify CLI
+        run: shopify theme login --store ${{ secrets.SHOPIFY_STORE_URL }} --password ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+
+      - name: Deploy theme to Shopify (Development Theme)
+        run: shopify theme push --theme 176870162764
