@@ -16,7 +16,4 @@ jobs:
         run: npm install -g @shopify/cli
 
       - name: Authenticate Shopify CLI
-        run: shopify theme login --store ${{ secrets.SHOPIFY_STORE_URL }} --password ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
-
-      - name: Deploy theme to Shopify (Development Theme)
-        run: shopify theme push --theme 176870162764
+        run: shopify theme push --theme 176831725900 --store ${{ secrets.SHOPIFY_STORE_URL }} --password ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
