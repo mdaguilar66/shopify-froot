@@ -27,4 +27,6 @@ jobs:
 
       - name: Deploy to Shopify
         working-directory: dist
+        env:
+          SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
         run: shopify theme push --theme 176870162764
