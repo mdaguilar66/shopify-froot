@@ -9,7 +9,7 @@
     "watch": "webpack --watch",
     "build": "webpack --mode production && npm run copy-assets",
     "theme:dev": "shopify theme dev --path dist/",
-    "copy-assets": "cp dist/theme.min.js assets/ && cp dist/theme.css.liquid assets/"
+    "copy-assets": "cp dist/assets/theme.min.js assets/ && cp dist/assets/theme.css.liquid assets/"
   },
   "keywords": [],
   "author": "",
