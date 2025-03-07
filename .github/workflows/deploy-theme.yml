@@ -12,8 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Build theme
+        run: npm run build
+        # This creates dist/ at build time in the CI environment
+
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli
 
-      - name: Authenticate Shopify CLI
-        run: shopify theme push --theme 176870162764 --store ${{ secrets.SHOPIFY_STORE_URL }} --password ${{ secrets.SHOPIFY_ACCESS_TOKEN }} --path dist/
+      - name: Deploy to Shopify
+        run: shopify theme push --theme 176870162764 \
+          --store ${{ secrets.SHOPIFY_STORE_URL }} \
+          --password ${{ secrets.SHOPIFY_ACCESS_TOKEN }} \
+          --path dist/
