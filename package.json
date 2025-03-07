@@ -4,12 +4,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode development && npm run copy-assets",
+    "dev": "webpack --mode development",
     "start": "npm-run-all --parallel watch theme:dev",
     "watch": "webpack --watch",
-    "build": "webpack --mode production && npm run copy-assets",
-    "theme:dev": "shopify theme dev --path dist/",
-    "copy-assets": "cp dist/assets/theme.min.js assets/ && cp dist/assets/theme.css.liquid assets/"
+    "build": "webpack --mode production",
+    "theme:dev": "shopify theme dev --path dist/"
   },
   "keywords": [],
   "author": "",
