@@ -26,4 +26,4 @@ jobs:
         run: npm install -g @shopify/cli
 
       - name: Deploy to Shopify
-        run: shopify theme push --theme 176870162764 dist
+        run: shopify theme push --theme 176870162764 --path dist
