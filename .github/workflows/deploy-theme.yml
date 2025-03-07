@@ -29,4 +29,5 @@ jobs:
         working-directory: dist
         env:
           SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
+          SHOPIFY_FLAG_PASSWORD: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
         run: shopify theme push --theme 176870162764
