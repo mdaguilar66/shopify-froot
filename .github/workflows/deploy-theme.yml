@@ -25,8 +25,5 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli
 
-      - name: Login to Shopify Store
-        run: shopify login --store ${{ secrets.SHOPIFY_STORE_URL }}
-
       - name: Deploy to Shopify
         run: shopify theme push --theme 176870162764 --dir dist
