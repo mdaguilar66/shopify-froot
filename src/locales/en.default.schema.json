@@ -450,6 +450,14 @@
     },
     "announcement-bar": {
       "name": "Announcement bar",
+      "settings": {
+        "auto_rotate": {
+          "label": "Auto Rotate"
+        },
+        "change_slides_speed": {
+          "label": "Change Slides Speed"
+        }
+      },
       "blocks": {
         "announcement": {
           "name": "Announcement",

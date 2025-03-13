@@ -576,7 +576,7 @@ class SliderComponent extends HTMLElement {
     super();
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
-    this.enableSliderLooping = false;
+    this.enableSliderLooping = this.getAttribute('data-enable-looping') !== 'false';
     this.currentPageElement = this.querySelector('.slider-counter--current');
     this.pageTotalElement = this.querySelector('.slider-counter--total');
     this.prevButton = this.querySelector('button[name="previous"]');
@@ -591,6 +591,20 @@ class SliderComponent extends HTMLElement {
     this.slider.addEventListener('scroll', this.update.bind(this));
     this.prevButton.addEventListener('click', this.onButtonClick.bind(this));
     this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
+
+    // Autoplay Setup:
+    // If the slider container has data-autoplay="true", start autoplay using the data-speed attribute.
+    if (this.slider.getAttribute('data-autoplay') === 'true') {
+      // Read autoplay speed (in seconds) from data-speed, defaulting to 5 seconds if not provided.
+      this.autoplaySpeed = parseInt(this.slider.getAttribute('data-speed') || '5', 10) * 1000;
+      this.play();
+
+      // Pause autoplay on mouseover/focus and resume on mouseleave/blur.
+      this.addEventListener('mouseover', this.pause.bind(this));
+      this.addEventListener('mouseleave', this.play.bind(this));
+      this.addEventListener('focusin', this.pause.bind(this));
+      this.addEventListener('focusout', this.play.bind(this));
+    }
   }
 
   initPages() {
@@ -627,18 +641,20 @@ class SliderComponent extends HTMLElement {
       }}));
     }
 
-    if (this.enableSliderLooping) return;
+    // After updating currentPage and dispatching the event…
+    if (!this.enableSliderLooping) {
+      // Disable/enable navigation buttons
+      if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
+        this.prevButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.prevButton.removeAttribute('disabled');
+      }
 
-    if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
-      this.prevButton.setAttribute('disabled', 'disabled');
-    } else {
-      this.prevButton.removeAttribute('disabled');
-    }
-
-    if (this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1])) {
-      this.nextButton.setAttribute('disabled', 'disabled');
-    } else {
-      this.nextButton.removeAttribute('disabled');
+      if (this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1])) {
+        this.nextButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.nextButton.removeAttribute('disabled');
+      }
     }
   }
 
@@ -651,9 +667,41 @@ class SliderComponent extends HTMLElement {
     event.preventDefault();
     const step = event.currentTarget.dataset.step || 1;
     this.slideScrollPosition = event.currentTarget.name === 'next' ? this.slider.scrollLeft + (step * this.sliderItemOffset) : this.slider.scrollLeft - (step * this.sliderItemOffset);
-    this.slider.scrollTo({
-      left: this.slideScrollPosition
-    });
+    // If on the last page, go back to the start; otherwise, advance one slide.
+    if (this.currentPage >= this.totalPages) {
+      this.slider.scrollTo({
+        left: 0,
+      });
+    } else {
+      this.slider.scrollTo({
+        left: this.slideScrollPosition
+      });
+    }
+  }
+
+  // Autoplay methods
+  autoRotateSlides() {
+    // If on the last page, go back to the start; otherwise, advance one slide.
+    if (this.currentPage >= this.totalPages) {
+      this.slider.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      this.slider.scrollTo({
+        left: this.slider.scrollLeft + this.sliderItemOffset,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  play() {
+    clearInterval(this.autoplay);
+    this.autoplay = setInterval(this.autoRotateSlides.bind(this), this.autoplaySpeed);
+  }
+
+  pause() {
+    clearInterval(this.autoplay);
   }
 }
 
@@ -668,6 +716,7 @@ class SlideshowComponent extends SliderComponent {
     if (!this.sliderControlWrapper) return;
 
     this.sliderFirstItemNode = this.slider.querySelector('.slideshow__slide');
+
     if (this.sliderItemsToShow.length > 0) this.currentPage = 1;
 
     this.sliderControlLinksArray = Array.from(this.sliderControlWrapper.querySelectorAll('.slider-counter__link'));
