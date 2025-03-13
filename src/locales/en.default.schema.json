@@ -1450,6 +1450,23 @@
         "name": "Image with text"
       }
     },
+    "image-with-text-custom": {
+      "name": "Image with text custom",
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "image": {
+          "label": "Image"
+        }
+      },
+      "presets": {
+        "name": "Image with text custom"
+      }
+    },
     "multirow": {
       "name": "Multirow",
       "settings": {
