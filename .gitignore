@@ -3,7 +3,7 @@ node_modules/
 package-lock.json
 
 # Ignore Webpack output (if using a dist folder)
-dist/
+# dist/
 
 # Ignore Shopify CLI cache
 .shopify-cli/
