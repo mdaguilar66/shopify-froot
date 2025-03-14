@@ -7,14 +7,31 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
+ {
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "disabled": true,
       "blocks": {
+        "announcement_iREAYK": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
+        "announcement_phDyPk": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -26,9 +43,14 @@
         }
       },
       "block_order": [
+        "announcement_iREAYK",
+        "announcement_phDyPk",
         "announcement-bar-0"
       ],
-      "settings": {}
+      "settings": {
+        "auto_rotate": true,
+        "change_slides_speed": 5
+      }
     },
     "header": {
       "type": "header",
