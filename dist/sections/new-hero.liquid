@@ -1,0 +1,97 @@
+{{ 'component-new-hero.css' | asset_url | stylesheet_tag }}
+
+{%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+{%- capture sizes -%}
+  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+  (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+{%- endcapture -%}
+
+<section class="new-hero-wrap">
+  <div class="page-width">
+    <div class="new-hero__inner">
+      <div class="new-hero__content">
+        <h1 class="h1">{{ section.settings.heading }}</h1>
+        <p>{{ section.settings.text }}</p>
+        <div class="new-hero__media new-hero__media--mobile"></div>
+        <div class="new-hero__bottom"></div>
+        <div class="new-hero__bottom">
+          <div class="new-hero__button">
+            <a
+              href="{{ section.settings.button_link }}"
+              class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+            >
+              {{ section.settings.button_label | escape }}
+            </a>
+          </div>
+          <div class="new-hero__review-stars"></div>
+        </div>
+        <div class="new-hero__logos logos__container">
+          <div class="logos">
+            <p class="logos__text"></p>
+            <div class="logos__svg">
+              <span class="banner__logo"></span>
+              <span class="banner__logo"></span>
+              <span class="banner__logo"></span>
+              <span class="banner__logo"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="new-hero__media new-hero__media--desktop media">
+    {% if section.settings.image != blank %}
+      {{ section.settings.image | image_url: width: 1500 | image_tag: loading: 'lazy', sizes: sizes, widths: widths }}
+    {% else %}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "New Hero",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "New Hero Heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Enter your text here...</p>",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Click Here",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "Use outline button style"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Hero"
+    }
+  ]
+}
+{% endschema %}
