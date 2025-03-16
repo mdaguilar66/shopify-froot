@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "6a3bb789-ce10-45f5-ae67-e2063ef8c76b": {
       "type": "image-banner",
@@ -165,10 +165,51 @@
     },
     "image_with_text_custom_UtLkdY": {
       "type": "image-with-text-custom",
+      "blocks": {
+        "icon_q3tU6k": {
+          "type": "icon",
+          "settings": {
+            "icon": "silhouette",
+            "icon_alt": ""
+          }
+        },
+        "heading_7WNMGp": {
+          "type": "heading",
+          "settings": {
+            "heading": "Skis Built for Peak Performance",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ur97i9": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Embrace the slopes with skis engineered for precision and performance.</strong> Crafted to carve seamlessly through fresh powder or grip confidently on icy trails, these skis blend lightweight design with cutting-edge technology. </p>",
+            "text_style": "body"
+          }
+        },
+        "button_QqbLdi": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "icon_q3tU6k",
+        "heading_7WNMGp",
+        "text_Ur97i9",
+        "button_QqbLdi"
+      ],
       "settings": {
-        "heading": "heading",
-        "text": "erifouheripfguheirqhiqerhgueqrhgieurhgrehgerhgeuhrg;khergherqjkghejrlkhgerjhgjlkerhgl",
-        "image": "shopify://shop_images/Main.jpg"
+        "image": "shopify://shop_images/Main.jpg",
+        "height": "large",
+        "background_color": "#ffffff",
+        "desktop_content_position": "middle",
+        "mobile_layout_row": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
