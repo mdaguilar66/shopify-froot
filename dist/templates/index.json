@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "new_hero_aUin4Y": {
       "type": "new-hero",
@@ -54,6 +54,7 @@
         "template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-1",
         "template--18309637636369__6a3bb789-ce10-45f5-ae67-e2063ef8c76b-168016437761699a6e-2"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "image": "shopify://shop_images/theme_cover_image.jpg",
