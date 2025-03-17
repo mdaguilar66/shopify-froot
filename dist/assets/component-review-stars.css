@@ -1,0 +1,14 @@
+.reviews-snippet {
+  display: flex;
+  align-items: center;
+}
+
+.reviews-snippet .star {
+  color: #ffd700;
+}
+
+.review-count {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #333;
+}

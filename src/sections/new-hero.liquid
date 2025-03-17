@@ -1,4 +1,4 @@
-{{ 'component-new-hero.css' | asset_url | stylesheet_tag }}
+{{ 'section-new-hero.css' | asset_url | stylesheet_tag }}
 
 {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
 {%- capture sizes -%}
@@ -6,10 +6,10 @@
   (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
 {%- endcapture -%}
 
-<section class="new-hero-wrap">
+<div class="new-hero-wrap">
   <div class="page-width">
     <div class="new-hero__inner">
-      <div class="new-hero__content">
+      <div class="new-hero__content new-hero__content--right">
         <h1 class="h1">{{ section.settings.heading }}</h1>
         <p>{{ section.settings.text }}</p>
         <div class="new-hero__media new-hero__media--mobile"></div>
@@ -23,34 +23,29 @@
               {{ section.settings.button_label | escape }}
             </a>
           </div>
-          <div class="new-hero__review-stars"></div>
-        </div>
-        <div class="new-hero__logos logos__container">
-          <div class="logos">
-            <p class="logos__text"></p>
-            <div class="logos__svg">
-              <span class="banner__logo"></span>
-              <span class="banner__logo"></span>
-              <span class="banner__logo"></span>
-              <span class="banner__logo"></span>
-            </div>
+          <div class="new-hero__review-stars">
+            {%- render 'review-stars' -%}
           </div>
+        </div>
+        <div class="new-hero__logos logos__container page-width">
+          {%- render 'as-seen-in' -%}
         </div>
       </div>
     </div>
   </div>
-  <div class="new-hero__media new-hero__media--desktop media">
+  <div class="new-hero__media new-hero__media--desktop">
     {% if section.settings.image != blank %}
       {{ section.settings.image | image_url: width: 1500 | image_tag: loading: 'lazy', sizes: sizes, widths: widths }}
     {% else %}
       {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
     {% endif %}
   </div>
-</section>
+</div>
 
 {% schema %}
 {
   "name": "New Hero",
+  "tag": "section",
   "class": "section",
   "settings": [
     {

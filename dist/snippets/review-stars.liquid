@@ -1,0 +1,10 @@
+{{ 'component-review-stars.css' | asset_url | stylesheet_tag }}
+
+<div class="reviews-snippet">
+  <div class="stars">
+    {% for i in (1..5) %}
+      <span class="star {% if i <= 4 %}filled{% endif %}">★</span>
+    {% endfor %}
+    <span class="review-count">(9785 reviews)</span>
+  </div>
+</div>

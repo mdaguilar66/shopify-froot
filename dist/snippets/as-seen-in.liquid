@@ -1,0 +1,11 @@
+{{ 'component-as-seen-in.css' | asset_url | stylesheet_tag }}
+
+<div class="logos-section">
+  <p class="logos-title">As seen in...</p>
+  <div class="logos-wrap">
+    <span class="logo-item">{% render 'icon-forbes' %}</span>
+    <span class="logo-item">{% render 'icon-daily-mail' %}</span>
+    <span class="logo-item">{% render 'icon-vogue' %}</span>
+    <span class="logo-item">{% render 'icon-mens-fitness' %}</span>
+  </div>
+</div>

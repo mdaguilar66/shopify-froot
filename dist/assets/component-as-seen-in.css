@@ -1,0 +1,31 @@
+.logos-section {
+  padding: 40px 0;
+  text-align: center;
+  width: fit-content;
+  float: right;
+  margin-top: 39px;
+}
+
+.logos-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.logos-section .logos-title {
+  text-align: left;
+  margin: 0;
+}
+
+.logo-item img {
+  max-width: 100px;
+  height: auto;
+  display: inline-block;
+  opacity: 0.8;
+}
+
+.logo-item img:hover {
+  opacity: 1;
+}
