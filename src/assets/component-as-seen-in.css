@@ -1,22 +1,49 @@
 .logos-section {
-  padding: 40px 0;
-  text-align: center;
-  width: fit-content;
-  float: right;
-  margin-top: 39px;
+}
+
+@media screen and (min-width: 750px) {
+  .logos-section {
+    padding: 40px 0;
+    text-align: center;
+    width: fit-content;
+    float: right;
+    margin-top: 39px;
+  }
 }
 
 .logos-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
   flex-wrap: wrap;
 }
 
+@media screen and (min-width: 750px) {
+  .logos-wrap {
+    gap: 30px;
+  }
+}
+
 .logos-section .logos-title {
-  text-align: left;
-  margin: 0;
+  /* text-align: left;
+  margin: 0; */
+}
+
+@media screen and (min-width: 750px) {
+  .logos-section .logos-title {
+    text-align: left;
+    margin: 0;
+  }
+}
+
+.logo-item {
+  margin: 0 15px;
+}
+
+@media screen and (min-width: 750px) {
+  .logo-item {
+    margin: 0;
+  }
 }
 
 .logo-item img {

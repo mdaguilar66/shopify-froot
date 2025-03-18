@@ -10,10 +10,19 @@
   <div class="page-width">
     <div class="new-hero__inner">
       <div class="new-hero__content new-hero__content--right">
-        <h1 class="h1">{{ section.settings.heading }}</h1>
-        <p>{{ section.settings.text }}</p>
-        <div class="new-hero__media new-hero__media--mobile"></div>
-        <div class="new-hero__bottom"></div>
+        <h1 class="h1--large title--primary">{{ section.settings.heading }}</h1>
+        <p class="subtitle">{{ section.settings.text }}</p>
+        <div class="new-hero__media new-hero__media--mobile">
+          {% if section.settings.image != blank %}
+            {{
+              section.settings.image
+              | image_url: width: 1500
+              | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+            }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
         <div class="new-hero__bottom">
           <div class="new-hero__button">
             <a
@@ -27,7 +36,7 @@
             {%- render 'review-stars' -%}
           </div>
         </div>
-        <div class="new-hero__logos logos__container page-width">
+        <div class="new-hero__logos logos__container">
           {%- render 'as-seen-in' -%}
         </div>
       </div>
