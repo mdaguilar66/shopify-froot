@@ -1,0 +1,71 @@
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+
+  {% comment %} Vendor dropdown menu {% endcomment %}
+  <select name="vendor" id="vendor-filter">
+    <option>Select Vendor</option>
+    {% for vendor in shop.vendors %}
+      <option value="{{ vendor }}">{{ vendor }}</option>
+    {% endfor %}
+  </select>
+
+  {% comment %} Product list {% endcomment %}
+  <div class="product-list">
+    {% for product in collections.all.products %}
+      <div class="product" data-vendor="{{ product.vendor }}">
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.price | money_with_currency | strip_html }}</p>
+        <img
+          src="{{ product.featured_image | img_url: 'medium' }}"
+          class="product-image"
+          alt="{{ product.title | escape }}"
+        >
+        <a href="{{ product.url }}">View Product</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  console.log('testing here');
+
+  const vendorDropdown = document.getElementById('vendor-filter');
+  const products = document.querySelectorAll('.product');
+
+  vendorDropdown.addEventListener('change', function () {
+    let selectedVendor = this.value;
+    console.log(selectedVendor, 'selectedVendor');
+
+    products.forEach(function (product) {
+      let productVendor = product.getAttribute('data-vendor');
+      console.log(productVendor, 'productVendor');
+      if (selectedVendor === productVendor) {
+        // show product that matches selected vendor
+        product.style.display = 'block';
+      } else {
+        // hide product that does not match selected vendor
+        product.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Vendor Filter",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Enter heading here"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vendor Filter"
+    }
+  ]
+}
+{% endschema %}
