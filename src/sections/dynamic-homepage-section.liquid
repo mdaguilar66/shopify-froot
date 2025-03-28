@@ -1,0 +1,117 @@
+<section class="dynamic-homepage">
+  <div class="dynamic-homepage__wrapper">
+    <div class="dynamic-homepage__content">
+      <h1>{{ section.settings.title }}</h1>
+      <p>{{ section.settings.subtitle }}</p>
+    </div>
+    <div class="dynamic-homepage__block-content"></div>
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'text_block' %}
+          <h2>{{ block.settings.heading }}</h2>
+          <p>{{ block.settings.content }}</p>
+        {% when 'image_block' %}
+          <img
+            src="{{ block.settings.image | image_url: width: 300 }}"
+            class="dynamic-homepag__image"
+            alt="{{ block.settings.image.alt | escape }}"
+            loading="lazy"
+            width="150"
+            height="{{ 150 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+          >
+          <p>{{ block.settings.caption }}</p>
+        {% when 'testimonial_block' %}
+          <h2>{{ block.settings.testimonial }}</h2>
+          <p>{{ block.settings.author }}</p>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dynamic homepage section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Your heading here"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content",
+          "default": "Your content here..."
+        }
+      ]
+    },
+    {
+      "type": "image_block",
+      "name": "Image Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "testimonial_block",
+      "name": "Testimonial Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Author name"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial",
+          "default": "Testimonial here..."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dynamic homepage section",
+      "category": "Home"
+    }
+  ]
+}
+{% endschema %}
