@@ -1,0 +1,64 @@
+{{ 'section-test-product.css' | asset_url | stylesheet_tag }}
+
+<section>
+  {% if template.name == 'product' %}
+    {% comment %} Display the product title, price, and description on a product detail page {% endcomment %}
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.price | money_with_currency | strip_html }}</p>
+    <p>{{ product.description }}</p>
+
+    {% comment %} Checks if at least one product variant is available {% endcomment %}
+    {% if product.available %}
+      <p>At least one product variant is available</p>
+    {% else %}
+      <p>No products variants available</p>
+    {% endif %}
+
+    {% comment %}  Implement a check to display different messages based on product availability. For example, show "In Stock" or "Out of Stock" based on the inventory level. {% endcomment %}
+    {% for variant in product.variants %}
+      <p>{{ variant.title }}</p>
+      {% if variant.inventory_management and variant.inventory_quantity > 0 %}
+        In stock ({{ variant.inventory_quantity }} available)
+      {% elsif variant.inventory_management %}
+        Out of stock
+      {% else %}
+        Stock information not available
+      {% endif %}
+    {% endfor %}
+
+    <h1>test</h1>
+
+    {% comment %} Display a list of featured products in a section. Only show products that are tagged with "featured." {% endcomment %}
+    {% comment %} -> iterate through collections and check for tag 'featured' {% endcomment %}
+    {% assign all_products_collection = collections['all-products'] %}
+    <ul class="grid">
+      {% for product in all_products_collection.products %}
+        {% if product.tags contains 'featured' %}
+          <li class="grid-item">
+            {% render 'card-product',
+              card_product: product,
+              media_aspect_ratio: 'portrait',
+              show_secondary_image: true,
+              show_vendor: false,
+              show_rating: false
+            %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Test Product",
+  "class": "section",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Test Product"
+    }
+  ]
+}
+{% endschema %}
