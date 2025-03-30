@@ -1,0 +1,200 @@
+{% comment %} Objective: You are tasked with implementing a product comparison feature on a Shopify store. The feature should allow users to select products for comparison, dynamically load product data (like title, price, description, and SKU) from the Shopify Admin API, and display the selected products side by side for comparison. {% endcomment %}
+{% assign ss = section.settings %}
+
+<section class="product-comparison">
+  <div class="product-comparison__header">
+    {% if ss.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if ss.content != blank %}
+      {{ section.settings.content }}
+    {% endif %}
+  </div>
+
+  {% comment %} Select product to add to comparison {% endcomment %}
+  <div class="product-comparison__product-selection">
+    <div class="product-comparison__select select">
+      <select
+        name="product"
+        id="productSelect"
+        class="select__select"
+      >
+        <option value="">Choose Product To Compare</option>
+        {% for product in collections.all.products %}
+          <option value="{{ product.handle }}">
+            {{ product.title }}
+          </option>
+        {% endfor %}
+      </select>
+      {% render 'icon-caret' %}
+    </div>
+
+    <button class="product-comparison__button button" id="addProductComparisonButton">Add Product</button>
+  </div>
+
+  {% comment %} List maximum of 3 products to compare {% endcomment %}
+  <div id="productComparisonList" class="product-comparison__product-list"></div>
+</section>
+
+<script>
+  window.addEventListener('load', (event) => {
+    // selectors
+    const productSelector = document.getElementById('productSelect');
+    const addProductComparisonButton = document.getElementById('addProductComparisonButton');
+    const productComparisonList = document.getElementById('productComparisonList');
+    let productHandle = null;
+
+    // Initialize an array to store selected product handles
+    let selectedProducts = [];
+
+    // listen for change in product selection
+    productSelector.addEventListener('change', function () {
+      productHandle = encodeURIComponent(this.value);
+    });
+
+    // Add product to comparison
+    addProductComparisonButton.addEventListener('click', function (event) {
+      // Validate product selection
+      if (!productHandle) {
+        alert('Please select a product to compare.');
+        return;
+      }
+
+      // Check if product has already been added
+      if (selectedProducts.includes(productHandle)) {
+        alert('Product has already been added!');
+        return;
+      }
+
+      // Limit to a maximum of 3 products
+      if (selectedProducts.length >= 3) {
+        alert('You can only compare up to 3 products.');
+        return;
+      }
+
+      // Add it to the array if it has not been added
+      selectedProducts.push(productHandle);
+
+      getProductData(productHandle);
+    });
+
+    // fetch selected product info
+    function getProductData(productHandle) {
+      const shopifyUrl = 'https://froot-uk.myshopify.com/api/2023-01/graphql.json';
+      const storefrontAccessToken = '1e833045e2b72aa6638936ba1a7e1067';
+
+      const query = `
+          query {
+            product(handle: "${productHandle}") {
+              id
+              title
+              descriptionHtml
+              description
+              productType
+              totalInventory
+              featuredImage {
+                url
+              }
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              variants(first: 5) {
+                edges {
+                  node {
+                    id
+                    title
+                    sku
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+              images(first: 3) {
+                edges {
+                  node {
+                    originalSrc
+                    altText
+                  }
+                }
+              }
+            }
+          }
+        `;
+
+      fetch(shopifyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        },
+        body: JSON.stringify({ query: query }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Product Data:', data);
+          // Use the fetched product data (e.g., render it in the UI)
+          let product = data.data.product;
+
+          // Construct the HTML for the product
+          let productImage = product.featuredImage.url;
+          let productTitle = product.title;
+          let productDescription = product.descriptionHtml; // or use product.description if you prefer plain text
+          let productPrice = product.priceRange.minVariantPrice.amount;
+          let currencyCode = product.priceRange.minVariantPrice.currencyCode;
+
+          loadProductData(productImage, productTitle, productDescription, productPrice, currencyCode);
+        })
+        .catch((error) => {
+          console.error('Error fetching product data:', error);
+        });
+    }
+
+    // rerender section with selected product info included
+    function loadProductData(productImage, productTitle, productDescription, productPrice, currencyCode) {
+      // Create a new product element
+      let productElement = document.createElement('div');
+      productElement.classList.add('product-item');
+
+      productElement.innerHTML = `
+      <img src="${productImage}" width="150" class="product-image" alt="${productTitle}">
+      <h3>${productTitle}</h3>
+      <p>${productDescription}</p>
+      <p><strong>Price:</strong> ${productPrice} ${currencyCode}</p>
+      `;
+
+      // Append the product to the comparison list
+      productComparisonList.appendChild(productElement);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Comparison",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Enter heading here"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Enter content here...</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison"
+    }
+  ]
+}
+{% endschema %}

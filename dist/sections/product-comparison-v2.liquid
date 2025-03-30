@@ -1,0 +1,129 @@
+{% comment %} Objective: You are tasked with implementing a product comparison feature on a Shopify store. The feature should allow users to select products for comparison, dynamically load product data (like title, price, description, and SKU) from the Shopify Admin API, and display the selected products side by side for comparison. {% endcomment %}
+{% assign ss = section.settings %}
+
+<section class="product-comparison">
+  <div class="product-comparison__header">
+    {% if ss.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if ss.content != blank %}
+      {{ section.settings.content }}
+    {% endif %}
+  </div>
+
+  {% comment %} Select product to add to comparison {% endcomment %}
+  <div class="product-comparison__product-selection">
+    <div class="product-comparison__select select">
+      <select
+        name="product"
+        id="productSelect"
+        class="select__select"
+      >
+        <option value="">Choose Product To Compare</option>
+        {% for product in collections.all.products %}
+          <option value="{{ product.handle }}">
+            {{ product.title }}
+          </option>
+        {% endfor %}
+      </select>
+      {% render 'icon-caret' %}
+    </div>
+
+    <button class="product-comparison__button button" id="addProductComparisonButton">Add Product</button>
+  </div>
+
+  {% comment %} List maximum of 3 products to compare {% endcomment %}
+  <div id="productComparisonList" class="product-comparison__product-list"></div>
+</section>
+
+<script>
+  window.addEventListener('load', (event) => {
+    //selectors
+    const productSelector = document.getElementById('productSelect');
+    const addProductComparisonButton = document.getElementById('addProductComparisonButton');
+    const productComparisonList = document.getElementById('productComparisonList');
+    // Initialize an array to store selected product handles
+    let selectedProducts = [];
+
+    // click event on add product button
+    addProductComparisonButton.addEventListener('click', function () {
+      let productHandle = productSelector.value;
+
+      // check if product has already been added
+      if (selectedProducts.includes(productHandle)) {
+        alert('Product has already been added!');
+        return;
+      }
+
+      // check is selected products is at max 3
+      if (selectedProducts.length >= 3) {
+        alert('You can only compare up to 3 products.');
+        return;
+      }
+
+      selectedProducts.push(productHandle);
+
+      // fetch selected product data and render it
+      getProduct(productHandle);
+    });
+
+    function getProduct(productHandle) {
+      fetch(`/products/${productHandle}.json`)
+        .then((response) => response.json())
+        .then((product) => {
+          console.log('Product:', product.product);
+          let selectedProduct = product.product;
+
+          let productImage = selectedProduct.image.src;
+          let productTitle = selectedProduct.title;
+          let productTags = selectedProduct.tags;
+
+          renderProduct(productImage, productTitle, productTags);
+        })
+        .catch((error) => console.log('Error fetching product data:', error));
+    }
+
+    function getProductVariants(productHandle) {}
+
+    function renderProduct(image, title, tags) {
+      // Create a new product element
+      let productElement = document.createElement('div');
+      productElement.classList.add('product-item');
+
+      productElement.innerHTML = `
+        <img src="${image}" width="150" class="product-image" alt="${title}">
+        <h2>${title}</h2>
+        <p>${tags}</p>
+      `;
+
+      // append product to comparison list
+      productComparisonList.appendChild(productElement);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Comparison V2",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Enter heading here"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Enter content here...</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison V2"
+    }
+  ]
+}
+{% endschema %}
