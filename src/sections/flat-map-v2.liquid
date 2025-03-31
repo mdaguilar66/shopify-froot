@@ -7,6 +7,36 @@
 
 <section>
   <h2>{{ section.settings.heading }}</h2>
+
+  {% assign images_string = '' %}
+  {% for product in collections.all.products %}
+    {% for image in product.images %}
+      {{ image.src }}
+      {% assign images_string = images_string | append: image.src | append: ',' %}
+    {% endfor %}
+  {% endfor %}
+
+  {{ images_string }}
+
+  {% comment %} convert string to array {% endcomment %}
+  {% assign images_array = images_string | split: ',' %}
+
+  {{ images_array }}
+
+  {% comment %} Loop over images_array {% endcomment %}
+  <ul>
+    {% for image in images_array %}
+      {% unless image == '' %}
+        <li>
+          {% if image contains 'cdn.shopify.com' %}
+            <img src="{{ image }}" alt="Product image">
+          {% else %}
+            <img src="{{ image | file_url }}" alt="Product image">
+          {% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
 </section>
 
 {% schema %}
