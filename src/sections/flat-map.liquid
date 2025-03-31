@@ -1,0 +1,52 @@
+{% comment %}
+  Build a comma-separated string of tags from all products in a collection.
+  Note: This example does not remove duplicates; you could add logic with 'unless'
+  to filter them out if needed.
+{% endcomment %}
+
+<section>
+  <h1>{{ section.settings.heading }}</h1>
+
+  {% assign tags_string = '' %}
+  {% for product in collections.all.products %}
+    <h3>{{ product.title }}</h3>
+    {% for tag in product.tags %}
+      {% assign tags_string = tags_string | append: tag | append: ',' %}
+    {% endfor %}
+  {% endfor %}
+
+  {% comment %} tags_string is currently a comma-separated string of all product tags {% endcomment %}
+  {{ tags_string }}
+
+  {% comment %} convert tags_string into an array (you can now loop over flattened_tags) {% endcomment %}
+  {% assign flattened_tags = tags_string | split: ',' %}
+  {{ flattened_tags }}
+
+  <ul>
+    {% for tag in flattened_tags %}
+      {% unless tag == '' %}
+        <li>{{ tag }}</li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Flat Map",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Testing the flatMap function"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Flat Map"
+    }
+  ]
+}
+{% endschema %}

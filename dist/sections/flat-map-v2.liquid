@@ -1,0 +1,30 @@
+{% comment %}
+  Objective:
+  Imagine you have a Shopify collection (for example, collections.featured.products), and each product contains multiple images.
+  Your goal is to extract every image URL from every product and combine them into one flat array (i.e., a single list),
+   similar to what flatMap does in other programming languages.
+{% endcomment %}
+
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+</section>
+
+{% schema %}
+{
+  "name": "Flat Map V2",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Flat Map practice with image url's"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Flat Map V2"
+    }
+  ]
+}
+{% endschema %}

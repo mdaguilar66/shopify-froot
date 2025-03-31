@@ -79,7 +79,7 @@
     });
 
     // fetch selected product info
-    function getProductData(productHandle) {
+    {% comment %} function getProductData(productHandle) {
       const shopifyUrl = 'https://froot-uk.myshopify.com/api/2023-01/graphql.json';
       const storefrontAccessToken = '1e833045e2b72aa6638936ba1a7e1067';
 
@@ -152,7 +152,7 @@
         .catch((error) => {
           console.error('Error fetching product data:', error);
         });
-    }
+    } {% endcomment %}
 
     // rerender section with selected product info included
     function loadProductData(productImage, productTitle, productDescription, productPrice, currencyCode) {
