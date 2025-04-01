@@ -1,0 +1,41 @@
+<div class="section-rendering-api">
+  {% if section.settings.title %}
+    <h2>{{ section.settings.title }}</h2>
+  {% endif %}
+
+  {% if section.settings.content %}
+    <p>{{ section.settings.content }}</p>
+  {% endif %}
+</div>
+
+<script>
+  window.addEventListener('load', function () {
+    console.log('Section Rendering API here');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Section Rendering API",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Section Rendering API"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Content",
+      "default": "Enter any content here..."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section Rendering API"
+    }
+  ]
+}
+{% endschema %}

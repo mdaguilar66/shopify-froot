@@ -1,0 +1,31 @@
+{% assign complementary_products = product.metafields['shopify--discovery--product_recommendation'].complementary_products %}
+
+<p>Snowboard length: {{ product.metafields.test_data.snowboard_length.value }}</p>
+<p>Snowboard binding ammount: {{ product.metafields.test_data.binding_mount.value }}</p>
+
+{% if complementary_product %}
+  <img
+    src="{{ complementary_product.featured_image.src | img_url: '200x' }}"
+    alt="{{ complementary_product.featured_image.alt | escape }}"
+  >
+  <h4>{{ complementary_product.title }}</h4>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Metafields",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Metafields"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Metafields"
+    }
+  ]
+}
+{% endschema %}

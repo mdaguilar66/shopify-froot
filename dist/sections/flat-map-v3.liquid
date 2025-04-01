@@ -1,0 +1,99 @@
+{% comment %}
+  Each product in your Shopify store may have multiple variants, and each variant has several option values (for example, Size, Color, or Material).
+  Your task is to extract every option value from every variant across a collection, flatten them into a single list,
+  and then display that list in an unordered list on your storefront.
+{% endcomment %}
+
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+
+  {% comment %}
+    {% for product in collections.all.products %}
+      {{ product.title }}
+      <ul>
+        {% for variant in product.variants %}
+          <li>{{ variant.option1 }}</li>
+        {% endfor %}
+      </ul>
+      ----------
+      <ul>
+        {% for option in product.options %}
+          <li>{{ option }}</li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% endcomment %}
+
+  {% for product in collections.hydrogen.products %}
+    <h2>{{ product.title }}</h2>
+
+    <ul>
+      {% for variant in product.variants %}
+        <li>{{ variant.title }}</li>
+        ****************************
+        {% for option in variant.options %}
+          <li>{{ option }}</li>
+        {% endfor %}
+        ////////////////////////////
+      {% endfor %}
+    </ul>
+
+    -----------------------------------------------
+
+    <ul>
+      {% for variant in product.variants %}
+        {% for i in (1..product.options.size) %}
+          {% assign index = i | minus: 1 %}
+          {% assign option_name = product.options[index] %}
+          {% capture option_key %}option{{ i }}{% endcapture %}
+          {% assign option_value = variant[option_key] %}
+          <li>{{ option_name }} : {{ option_value }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+
+    -----------------------------------------------
+
+    <ul>
+      {% for variant in product.variants %}
+        <li>
+          <strong>{{ variant.title }}</strong>
+        </li>
+        {% for option in variant.options %}
+          {% assign index = forloop.index | minus: 1 %}
+          {% assign option_name = product.options[index] %}
+          {% assign option_value = variant.options[index] %}
+          <li>{{ option_name }} : {{ option_value }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+
+    ------------------------------------------------
+
+    <ul>
+      {% for option in product.options %}
+        <li>{{ option }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</section>
+
+{% schema %}
+{
+  "name": "Flat Map V3",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Flat Map practice with product variant option values"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Flat Map V3"
+    }
+  ]
+}
+{% endschema %}

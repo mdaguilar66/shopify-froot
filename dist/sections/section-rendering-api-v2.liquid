@@ -1,0 +1,63 @@
+{% comment %}
+  Objective: Use section rendering API rerender section based on a query parameter
+{% endcomment %}
+
+{% assign product_handle = request.query.product_handle %}
+{% assign product = all_products[product_handle] %}
+
+{% comment %} Select product to add to comparison {% endcomment %}
+<div class="product-comparison__product-selection">
+  <div class="product-comparison__select select">
+    <select
+      name="product"
+      id="productSelect"
+      class="select__select"
+    >
+      <option value="">Choose Product To Compare</option>
+      {% for product in collections.all.products %}
+        <option value="{{ product.handle }}">
+          {{ product.title }}
+        </option>
+      {% endfor %}
+    </select>
+    {% render 'icon-caret' %}
+  </div>
+
+  <button class="product-comparison__button button" id="addProductComparisonButton">Add Product</button>
+</div>
+
+<div class="product-item">
+  {% if product %}
+    <img src="{{ product.featured_image | img_url: '150x' }}" alt="{{ product.title }}">
+    <h2>{{ product.title }}</h2>
+    <p>{{ product.description | truncate: 150 }}</p>
+    <p>SKU: {{ product.variants.first.sku }}</p>
+    <p>Price: {{ product.price | money }}</p>
+  {% else %}
+    <p>Product not found.</p>
+  {% endif %}
+</div>
+
+<script>
+  window.addEventListener('load', (event) => {});
+</script>
+
+{% schema %}
+{
+  "name": "Section Rendering API V2",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "default_product_handle",
+      "label": "Default Product Handle",
+      "default": "default-product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section Rendering API V2"
+    }
+  ]
+}
+{% endschema %}
